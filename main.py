@@ -11,20 +11,20 @@ r = sr.Recognizer()
 def record_audio(ask = False):
     with sr.Microphone() as source:
         if ask:
-            moonlight_speak(ask)
+            subux_speak(ask)
         audio = r.listen(source)
         voice_data = ''
         try: 
             voice_data = r.recognize_google(audio)
         except sr.UnknownValueError:
-            moonlight_speak('Sorry, I did not get that')
+            subux_speak('Sorry, I did not get that')
         except sr.RequestError:
-            moonlight_speak('Sorry, my speech service is down')
+            subux_speak('Sorry, my speech service is down')
         return voice_data
 
 
 
-def moonlight_speak(audio_string):
+def subux_speak(audio_string):
     tts = gTTS(text=audio_string, lang='en')
     r = random.randint(1, 10000000)
     audio_file = 'audio-' + str(r) + '.mp3'
@@ -35,25 +35,28 @@ def moonlight_speak(audio_string):
 
 def respond(voice_data):
     if 'what is your name' in voice_data:
-        moonlight_speak('My name is Moonlight')
+        subux_speak('My name is susys')
+    if 'susys' in voice_data: #About SUSYS
+        subux_speak('Yes of course. They are web development group ')
     if 'what time is it' in voice_data:
-        moonlight_speak(ctime())
+        subux_speak(ctime())
     if 'search' in voice_data:
         search = record_audio('What do you want to search for?')
         url = 'https://google.com/search?q=' + search
         webbrowser.get().open(url)
-        moonlight_speak('Here is what I found for ' + search)
+        subux_speak('Here is what I found for ' + search)
     if 'find location' in voice_data:
         location = record_audio('What is the location?')
         url = 'https://google.nl/maps/place/' + location + '&amp;'
         webbrowser.get().open(url)
-        moonlight_speak('Here is the location of ' + location)
+        subux_speak('Here is the location of ' + location)
     if "shut down" in voice_data:
         exit()
 
 
+
 time.sleep(1)
-moonlight_speak('How can I help you?')
+subux_speak('How can I help you?')
 while 1:
     voice_data = record_audio() 
     respond(voice_data)
